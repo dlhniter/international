@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Código de Rastreo</title>
+    <style>
+        .message {
+            display: none;
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ingrese su Código de Rastreo</h1>
+    <form id="trackingForm" action="rastreo.html" method="GET">
+        <div>
+            <label for="trackingId">Código de Rastreo:</label>
+            <input id="trackingId" name="tracking-id" type="text" required pattern="12345678" title="Ingrese el código de rastreo correcto">
+        </div>
+        <button type="submit">Validar</button>
+    </form>
+    <p id="validMessage" class="message">Su código es válido</p>
+    <p id="errorMessage" class="error">Código de rastreo incorrecto</p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var trackingId = urlParams.get('tracking-id');
+            var trackingInput = document.getElementById('trackingId');
+            var validMessage = document.getElementById('validMessage');
+            var errorMessage = document.getElementById('errorMessage');
+
+            if (trackingId) {
+                trackingInput.value = trackingId;
+                if (trackingId === '12345678') {
+                    validMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                } else {
+                    validMessage.style.display = 'none';
+                    errorMessage.style.display = 'block';
+                }
+            }
+        });
+
+        document.getElementById('trackingForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita el envío del formulario
+            var trackingId = document.getElementById('trackingId').value;
+            var validMessage = document.getElementById('validMessage');
+            var errorMessage = document.getElementById('errorMessage');
+            
+            if (trackingId === '12345678') {
+                validMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+            } else {
+                validMessage.style.display = 'none';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
