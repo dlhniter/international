@@ -94,7 +94,7 @@
             const shipment = shipments.find(shipment => shipment.trackingId === trackingId);
 
             if (shipment) {
-                document.getElementById('guide-number').textContent = shipment.guideNumber;
+                document.getElementById('guide-number').textContent = shipment.trackingId;
                 document.getElementById('sender-name').textContent = shipment.senderName;
                 document.getElementById('origin').textContent = shipment.origin;
                 document.getElementById('status').textContent = shipment.status;
@@ -109,9 +109,9 @@
 
         // Ejecutar al cargar la página
         window.onload = function() {
-            const guideNumber = getQueryParam('guideNumber');
-            if (guideNumber) {
-                showShipmentInfo(guideNumber);
+            const trackingId = getQueryParam('trackingId');
+            if (trackingId) {
+                showShipmentInfo(trackingId);
             } else {
                 document.getElementById('info-box').style.display = 'none';
                 document.getElementById('error-message').textContent = 'Número de guía no proporcionado.';
