@@ -77,9 +77,9 @@
     <script>
         // Lista de datos de guía
         const shipments = [
-            { tracking-id: '1234567890', senderName: 'Juan Pérez', origin: 'Ciudad de México', status: 'En tránsito', destination: 'Monterrey', currentLocation: 'Guadalajara' },
-            { tracking-id: '2345678901', senderName: 'Ana López', origin: 'Guadalajara', status: 'Entregado', destination: 'Tijuana', currentLocation: 'Tijuana' },
-            { tracking-id: '3456789012', senderName: 'Luis Gómez', origin: 'Monterrey', status: 'En tránsito', destination: 'Ciudad Juárez', currentLocation: 'Saltillo' },
+            { trackingId: '1234567890', senderName: 'Juan Pérez', origin: 'Ciudad de México', status: 'En tránsito', destination: 'Monterrey', currentLocation: 'Guadalajara' },
+            { trackingId: '2345678901', senderName: 'Ana López', origin: 'Guadalajara', status: 'Entregado', destination: 'Tijuana', currentLocation: 'Tijuana' },
+            { trackingId: '3456789012', senderName: 'Luis Gómez', origin: 'Monterrey', status: 'En tránsito', destination: 'Ciudad Juárez', currentLocation: 'Saltillo' },
             // Agregar más datos aquí hasta llegar a 20
         ];
 
@@ -90,8 +90,8 @@
         }
 
         // Mostrar información basada en el número de guía
-        function showShipmentInfo(tracking-id) {
-            const shipment = shipments.find(shipment => shipment.tracking-id === tracking-id);
+        function showShipmentInfo(trackingId) {
+            const shipment = shipments.find(shipment => shipment.trackingId === trackingId);
 
             if (shipment) {
                 document.getElementById('guide-number').textContent = shipment.guideNumber;
