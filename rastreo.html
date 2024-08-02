@@ -3,65 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validación de Código de Rastreo</title>
+    <title>Rastreo de Envíos</title>
     <style>
-        .message {
-            display: none;
-            color: green;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+        }
+        .header {
+            background: linear-gradient(to right, #f7e68b, #ffffff);
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .header img {
+            height: 50px;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .info-box {
+            background-color: #f0f0f0;
+            border: 2px solid #ff0000;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+            border-radius: 5px;
+        }
+        .info-box p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .info-box .label {
             font-weight: bold;
+        }
+        .footer {
+            background-color: #f0f0f0;
+            color: #808080;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
         .error {
             color: red;
-            display: none;
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Ingrese su Código de Rastreo</h1>
-    <form id="trackingForm" action="rastreo.html" method="GET">
-        <div>
-            <label for="trackingId">Código de Rastreo:</label>
-            <input id="trackingId" name="tracking-id" type="text" required pattern="12345678" title="Ingrese el código de rastreo correcto">
-        </div>
-        <button type="submit">Validar</button>
-    </form>
-    <p id="validMessage" class="message">Su código es válido</p>
-    <p id="errorMessage" class="error">Código de rastreo incorrecto</p>
+    <div class="header">
+        <img src="logo.png" alt="Logo de la empresa">
+        <h1>Rastreo de Envíos</h1>
+    </div>
+
+    <div class="info-box" id="info-box">
+        <p id="error-message" class="error"></p>
+        <p><span class="label">Número de guía:</span> <span id="guide-number"></span></p>
+        <p><span class="label">Nombre del remitente:</span> <span id="sender-name"></span></p>
+        <p><span class="label">Lugar de origen:</span> <span id="origin"></span></p>
+        <p><span class="label">Estado del paquete:</span> <span id="status"></span></p>
+        <p><span class="label">Lugar de destino:</span> <span id="destination"></span></p>
+        <p><span class="label">Ubicación actual:</span> <span id="current-location"></span></p>
+    </div>
+
+    <div class="footer">
+        <p>© 2024 Empresa de Envíos. Todos los derechos reservados.</p>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var urlParams = new URLSearchParams(window.location.search);
-            var trackingId = urlParams.get('tracking-id');
-            var trackingInput = document.getElementById('trackingId');
-            var validMessage = document.getElementById('validMessage');
-            var errorMessage = document.getElementById('errorMessage');
+        // Lista de datos de guía
+        const shipments = [
+            { guideNumber: '1234567890', senderName: 'Juan Pérez', origin: 'Ciudad de México', status: 'En tránsito', destination: 'Monterrey', currentLocation: 'Guadalajara' },
+            { guideNumber: '2345678901', senderName: 'Ana López', origin: 'Guadalajara', status: 'Entregado', destination: 'Tijuana', currentLocation: 'Tijuana' },
+            { guideNumber: '3456789012', senderName: 'Luis Gómez', origin: 'Monterrey', status: 'En tránsito', destination: 'Ciudad Juárez', currentLocation: 'Saltillo' },
+            // Agregar más datos aquí hasta llegar a 20
+        ];
 
-            if (trackingId) {
-                trackingInput.value = trackingId;
-                if (trackingId === '12345678') {
-                    validMessage.style.display = 'block';
-                    errorMessage.style.display = 'none';
-                } else {
-                    validMessage.style.display = 'none';
-                    errorMessage.style.display = 'block';
-                }
-            }
-        });
+        // Obtener el número de guía de la URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
 
-        document.getElementById('trackingForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evita el envío del formulario
-            var trackingId = document.getElementById('trackingId').value;
-            var validMessage = document.getElementById('validMessage');
-            var errorMessage = document.getElementById('errorMessage');
-            
-            if (trackingId === '12345678') {
-                validMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
+        // Mostrar información basada en el número de guía
+        function showShipmentInfo(guideNumber) {
+            const shipment = shipments.find(shipment => shipment.guideNumber === guideNumber);
+
+            if (shipment) {
+                document.getElementById('guide-number').textContent = shipment.guideNumber;
+                document.getElementById('sender-name').textContent = shipment.senderName;
+                document.getElementById('origin').textContent = shipment.origin;
+                document.getElementById('status').textContent = shipment.status;
+                document.getElementById('destination').textContent = shipment.destination;
+                document.getElementById('current-location').textContent = shipment.currentLocation;
+                document.getElementById('error-message').textContent = '';
             } else {
-                validMessage.style.display = 'none';
-                errorMessage.style.display = 'block';
+                document.getElementById('info-box').style.display = 'none';
+                document.getElementById('error-message').textContent = 'Número de guía no válido o no encontrado.';
             }
-        });
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = function() {
+            const guideNumber = getQueryParam('guideNumber');
+            if (guideNumber) {
+                showShipmentInfo(guideNumber);
+            } else {
+                document.getElementById('info-box').style.display = 'none';
+                document.getElementById('error-message').textContent = 'Número de guía no proporcionado.';
+            }
+        }
     </script>
 </body>
 </html>
+
